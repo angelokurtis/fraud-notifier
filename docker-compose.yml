@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+  fraud-notifier:
+    container_name: fraud-notifier
+    image: kurtis/fraud-notifier:latest
+    depends_on:
+      - nats
+    ports:
+      - 8080:8082
+
+  nats:
+    container_name: nats
+    image: nats:latest
+    ports:
+      - 4222:4222
+      - 6222:6222
+      - 8222:8222
