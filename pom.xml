@@ -169,9 +169,6 @@
                 <tags>
                   <tag>${project.version}</tag>
                 </tags>
-                <ports>
-                  <port>8080</port>
-                </ports>
               </build>
               <run>
                 <namingStrategy>alias</namingStrategy>
