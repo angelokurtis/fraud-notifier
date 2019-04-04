@@ -2,23 +2,30 @@ package br.com.kurtis.fraud_notifier
 
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
+import io.vertx.core.logging.LoggerFactory
 
 class MainVerticle : AbstractVerticle() {
+
+    companion object {
+        private const val DEFAULT_PORT = 8888
+    }
+
+    private val log = LoggerFactory.getLogger(MainVerticle::class.java)
 
     override fun start(startFuture: Future<Void>) {
         vertx
                 .createHttpServer()
-                .requestHandler { req ->
-                    req.response()
+                .requestHandler {
+                    it.response()
                             .putHeader("content-type", "text/plain")
                             .end("Hello from Vert.x!")
                 }
-                .listen(8888) { http ->
-                    if (http.succeeded()) {
+                .listen(this.config().getInteger("http.port") ?: DEFAULT_PORT) {
+                    if (it.succeeded()) {
                         startFuture.complete()
-                        println("HTTP server started on port 8888")
+                        log.info("HTTP server started on port ${it.result().actualPort()}")
                     } else {
-                        startFuture.fail(http.cause())
+                        startFuture.fail(it.cause())
                     }
                 }
 
