@@ -1,0 +1,52 @@
+### Vert.x ###
+.vertx/
+
+### Eclipse ###
+.metadata
+bin/
+tmp/
+*.tmp
+*.bak
+*.swp
+*~.nib
+local.properties
+.settings/
+.loadpath
+.recommenders
+
+### Intellij+iml ###
+.idea/
+*.iws
+*.iml
+*.ipr
+
+### macOS ###
+*.DS_Store
+.AppleDouble
+.LSOverride
+
+### Maven ###
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+
+### NetBeans ###
+nbproject/private/
+buildTool/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
