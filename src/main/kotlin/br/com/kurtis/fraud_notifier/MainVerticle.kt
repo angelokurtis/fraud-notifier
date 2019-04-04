@@ -1,34 +1,40 @@
 package br.com.kurtis.fraud_notifier
 
-import io.vertx.core.AbstractVerticle
-import io.vertx.core.Future
+import br.com.kurtis.fraud_notifier.fraud.FraudVerticle
+import br.com.kurtis.fraud_notifier.health.HealthCheckVerticle
+import io.vertx.core.*
 import io.vertx.core.logging.LoggerFactory
 
 class MainVerticle : AbstractVerticle() {
 
-    companion object {
-        private const val DEFAULT_PORT = 8888
-    }
-
     private val log = LoggerFactory.getLogger(MainVerticle::class.java)
+    private val verticles = arrayOf(
+            FraudVerticle::class.java,
+            HealthCheckVerticle::class.java
+    )
+
+    override fun init(vertx: Vertx, context: Context) {
+        super.init(vertx, context)
+        this.log.info("MainVerticle initialized!")
+    }
 
     override fun start(startFuture: Future<Void>) {
-        vertx
-                .createHttpServer()
-                .requestHandler {
-                    it.response()
-                            .putHeader("content-type", "text/plain")
-                            .end("Hello from Vert.x!")
+        verticles
+                .map { it.name }
+                .map { deployVerticle(it) }
+                .let { CompositeFuture.all(it) }
+                .setHandler {
+                    if (it.succeeded()) startFuture.complete()
+                    else startFuture.fail(it.cause())
                 }
-                .listen(this.config().getInteger("http.port") ?: DEFAULT_PORT) {
-                    if (it.succeeded()) {
-                        startFuture.complete()
-                        log.info("HTTP server started on port ${it.result().actualPort()}")
-                    } else {
-                        startFuture.fail(it.cause())
-                    }
-                }
-
     }
 
+    private fun deployVerticle(name: String): Future<Void> {
+        val future = Future.future<Void>()
+        this.vertx.deployVerticle(name) {
+            if (it.failed()) future.fail(it.cause())
+            else future.complete()
+        }
+        return future
+    }
 }
