@@ -1,4 +1,4 @@
-package br.com.kurtis.fraud_notifier.fraud
+package br.com.kurtis.fraud_notifier.domain.fraud
 
 import io.nats.client.Connection
 import io.nats.client.Consumer

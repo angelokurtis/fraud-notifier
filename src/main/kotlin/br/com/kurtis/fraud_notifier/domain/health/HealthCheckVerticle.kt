@@ -1,6 +1,6 @@
-package br.com.kurtis.fraud_notifier.health
+package br.com.kurtis.fraud_notifier.domain.health
 
-import br.com.kurtis.fraud_notifier.error.ConfigNotFoundException
+import br.com.kurtis.fraud_notifier.infra.error.ConfigNotFoundException
 import io.vertx.core.AbstractVerticle
 import io.vertx.core.Future
 import io.vertx.core.logging.LoggerFactory

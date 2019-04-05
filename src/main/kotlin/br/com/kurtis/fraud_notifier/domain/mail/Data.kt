@@ -1,4 +1,4 @@
-package br.com.kurtis.fraud_notifier.fraud.message
+package br.com.kurtis.fraud_notifier.domain.mail
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonInclude

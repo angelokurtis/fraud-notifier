@@ -1,4 +1,4 @@
-package br.com.kurtis.fraud_notifier.health
+package br.com.kurtis.fraud_notifier.domain.health
 
 import io.vertx.core.DeploymentOptions
 import io.vertx.core.Vertx

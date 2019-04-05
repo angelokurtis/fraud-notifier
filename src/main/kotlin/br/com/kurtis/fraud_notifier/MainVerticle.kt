@@ -1,8 +1,8 @@
 package br.com.kurtis.fraud_notifier
 
-import br.com.kurtis.fraud_notifier.fraud.FraudVerticle
-import br.com.kurtis.fraud_notifier.health.HealthCheckVerticle
-import br.com.kurtis.fraud_notifier.mail.MailVerticle
+import br.com.kurtis.fraud_notifier.domain.fraud.FraudVerticle
+import br.com.kurtis.fraud_notifier.domain.health.HealthCheckVerticle
+import br.com.kurtis.fraud_notifier.domain.mail.MailVerticle
 import io.vertx.config.ConfigRetriever
 import io.vertx.core.*
 import io.vertx.core.json.JsonObject
