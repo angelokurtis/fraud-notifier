@@ -2,15 +2,23 @@ package br.com.kurtis.fraud_notifier
 
 import br.com.kurtis.fraud_notifier.fraud.FraudVerticle
 import br.com.kurtis.fraud_notifier.health.HealthCheckVerticle
+import br.com.kurtis.fraud_notifier.mail.MailVerticle
+import io.vertx.config.ConfigRetriever
 import io.vertx.core.*
+import io.vertx.core.json.JsonObject
 import io.vertx.core.logging.LoggerFactory
 
 class MainVerticle : AbstractVerticle() {
 
     private val log = LoggerFactory.getLogger(MainVerticle::class.java)
+    private val configs: JsonObject by lazy {
+        val retrieveConfig = retrieveConfig()
+        retrieveConfig.result()
+    }
     private val verticles = arrayOf(
             FraudVerticle::class.java,
-            HealthCheckVerticle::class.java
+            HealthCheckVerticle::class.java,
+            MailVerticle::class.java
     )
 
     override fun init(vertx: Vertx, context: Context) {
@@ -31,10 +39,23 @@ class MainVerticle : AbstractVerticle() {
 
     private fun deployVerticle(name: String): Future<Void> {
         val future = Future.future<Void>()
-        this.vertx.deployVerticle(name) {
+        val options = DeploymentOptions()
+        options.config = this.configs
+        this.vertx.deployVerticle(name, options) {
             if (it.failed()) future.fail(it.cause())
             else future.complete()
         }
         return future
     }
+
+    private fun retrieveConfig(): Future<JsonObject> {
+        val future = Future.future<JsonObject>()
+        val retriever = ConfigRetriever.create(this.vertx)
+        retriever.getConfig {
+            if (it.succeeded()) future.complete(it.result())
+            else future.fail(it.cause())
+        }
+        return future
+    }
+
 }

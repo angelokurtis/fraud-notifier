@@ -1,5 +1,6 @@
 package br.com.kurtis.fraud_notifier.fraud
 
+import br.com.kurtis.fraud_notifier.error.ConfigNotFoundException
 import io.nats.client.Connection
 import io.nats.client.Message
 import io.nats.client.Nats
@@ -21,7 +22,7 @@ class FraudVerticle : AbstractVerticle() {
     }
 
     override fun start() {
-        val server = this.config().getString("nats.server") ?: "localhost"
+        val server = this.config().getString("NATS_ADDRESS") ?: throw ConfigNotFoundException("NATS_ADDRESS")
         val options = Options.Builder()
                 .server("nats://$server:4222")
                 .connectionListener(NatsConnectionListener())
